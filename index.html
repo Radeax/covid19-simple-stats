@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <style>
+        .stat {
+            font-size: 80px;
+        }
+
+        #ex1 {
+            max-width: 90%;
+            max-height: 90%;
+            overflow: visible;
+        }
+
+        iframe {
+            min-width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .modal-dialog {
+            min-width: 95%;
+            height: 90%;
+        }
+
+        .modal-content {
+            height: inherit;
+        }
+
+        .modal-body {
+            min-height: 100%;
+            padding: 0px;
+        }
+    </style>
+    <script>
+        $.fn.digits = function () {
+            return this.each(function () {
+                $(this).text($(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+            })
+        }
+    </script>
+
+    <script>
+        function getStats() {
+            $.get('https://corona.lmao.ninja/all', function (res) {
+                // Get Stats
+                let stats = {
+                    totalCases: res.cases,
+                    totalDeaths: res.deaths,
+                    totalRecovered: res.recovered
+                };
+
+                $('#totalCases').text(stats.totalCases).digits().counterUp({ time: 1500 });
+                $('#totalDeaths').text(stats.totalDeaths).digits().counterUp({ time: 800 });
+                $('#totalRecovered').text(stats.totalRecovered).digits().counterUp({ time: 1100 });
+            }, 'json');
+        }
+
+        $(function pickMap() {
+            let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+
+            if (isMobile) {
+                //Conditional script here
+                $('#map').attr('src', 'https://www.arcgis.com/apps/opsdashboard/index.html#/85320e2ea5424dfaaa75ae62e5c06e61');
+                console.log('asdf');
+            }
+        });
+
+        $(document).ready(function () {
+            getStats();
+            $("#ex1").position({
+                my: "center",
+                at: "center t",
+                of: window
+            });
+        });
+    </script>
+
+</head>
+
+<body class="container">
+    <div class="row text-center">
+        <div class="col">
+            <h3 class="h3">Confirmed Cases</h3>
+            <p id="totalCases" class="stat"></p>
+        </div>
+        <div class="col">
+            <h3 class="h3">Total Deaths</h3>
+            <p id="totalDeaths" class="stat"></p>
+        </div>
+        <div class="col">
+            <h3 class="h3">Total Recovered</h3>
+            <p id="totalRecovered" class="stat"></p>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <a href="#ex1" class="h4 mt-4" data-toggle="modal" data-target="#exampleModalCenter">View Interactive Map</a>
+    </div>
+    <!-- Link to open the modal -->
+
+    <!-- Modal HTML embedded directly into document -->
+    <div id="ex1" class="modal p-0">
+        <iframe id="map"
+            src="https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6">
+        </iframe>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background-color: black;">
+                <div class="modal-header border-0">
+                    <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="text-white" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="map"
+                        src="https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
